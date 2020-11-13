@@ -4,10 +4,10 @@ package com.example.note_app.home
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.note_app.R
 
@@ -26,42 +26,44 @@ import com.example.note_app.R
 class NoteAdapter(
     var mDataset: ArrayList<NoteModel>
 ) :
-    RecyclerView.Adapter<NoteAdapter.ViewHolder>(), AdapterView.OnItemClickListener, View.OnLongClickListener{
+    RecyclerView.Adapter<NoteAdapter.ViewHolder>(), AdapterView.OnItemClickListener {
 
-    var mOnItemClickListener:OnItemClickListener?=null
-    var mOnIemLongClickListener:OnIemLongClickListener?=null
+    var mOnItemClickListener: OnItemClickListener? = null
+    var mOnIemLongClickListener: OnIemLongClickListener? = null
 
-    var position:Int=0
+    var position: Int = 0
+
     companion object {
         private const val TAG = "noteAdapter"
     }
 
 
-
-
-    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener,View.OnLongClickListener {
 
 
 //        val sliderDotspanel : LinearLayout = v.findViewById(R.id.slider_dots)
 
-        var titleTv:TextView=v.findViewById(R.id.title)
-        var date:TextView=v.findViewById(R.id.date)
 
+        var titleTv: TextView = v.findViewById(R.id.title)
+        var date: TextView = v.findViewById(R.id.date)
 
 
         init {
             v.setOnClickListener(this)
-            v.setOnLongClickListener(this@NoteAdapter)
+            v.setOnLongClickListener(this)
         }
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: NoteModel) {
-            titleTv.text=item.text.toString()
-            date.text=item.date.toString()
+//            itemView.setOnLongClickListener(View.OnLongClickListener { v ->
+//                mOnIemLongClickListener?.onItemLongClickListener(mDataset[adapterPosition])
+//            })
+
+            titleTv.text = item.title.toString()
+            date.text = item.createdAt.toString()
 
 
         }
-
 
 
         override fun onClick(v: View?) {
@@ -69,6 +71,10 @@ class NoteAdapter(
             mOnItemClickListener?.onItemClickListener(getItem(adapterPosition))
         }
 
+        override fun onLongClick(v: View?): Boolean {
+            mOnIemLongClickListener?.onItemLongClickListener(mDataset[adapterPosition])
+            return true
+        }
 
 
     }
@@ -104,12 +110,11 @@ class NoteAdapter(
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         mOnItemClickListener?.onItemClickListener(mDataset[position])
     }
-    override fun onLongClick(v: View?): Boolean {
-        mOnIemLongClickListener?.onItemLongClickListener(mDataset[position])
-        return true
-
-    }
-
+//    override fun onLongClick(v: View?): Boolean {
+////        mOnIemLongClickListener?.onItemLongClickListener(mDataset[position])
+//        return true
+//
+//    }
 
 
     fun removeItem(noteModel: NoteModel) {
@@ -139,18 +144,17 @@ class NoteAdapter(
         fun onItemClickListener(noteModel: NoteModel)
     }
 
-    interface OnIemLongClickListener{
+    interface OnIemLongClickListener {
         fun onItemLongClickListener(noteModel: NoteModel)
     }
 
-    fun setOnItemLongClickListener(mOnIemLongClickListener:OnIemLongClickListener){
-        this.mOnIemLongClickListener=mOnIemLongClickListener
+    fun setOnItemLongClickListener(mOnIemLongClickListener: OnIemLongClickListener) {
+        this.mOnIemLongClickListener = mOnIemLongClickListener
     }
 
-    fun setOnItemClickListener(mOnItemClickListener:OnItemClickListener){
-        this.mOnItemClickListener=mOnItemClickListener
+    fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener
     }
-
 
 
 }
