@@ -161,4 +161,14 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener, NoteAdapter.OnIt
                 noteAdapter.notifyDataSetChanged()
             })
     }
+
+    override fun onBackPressed() {
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+//        a.fl = Intent.FLAG_ACTIVITY_NEW_TASK;
+        //        a.fl = Intent.FLAG_ACTIVITY_NEW_TASK;
+        a.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(a)
+    }
+
 }
